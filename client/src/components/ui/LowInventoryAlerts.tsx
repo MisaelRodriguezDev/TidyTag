@@ -11,47 +11,52 @@ const LowInventoryAlerts: React.FC = () => {
   const alerts: Alert[] = [
     {
       id: 1,
-      product: "Kraft Boxes (Small)",
-      category: "Packaging",
+      product: "Cajas Kraft (Pequeñas)",
+      category: "Empaque",
       currentQty: 12,
     },
     {
       id: 2,
-      product: "Paper Bags (L)",
-      category: "Packaging",
+      product: "Bolsas de Papel (L)",
+      category: "Empaque",
       currentQty: 8,
     },
     {
       id: 3,
-      product: "Thermal Labels",
-      category: "Supplies",
+      product: "Etiquetas Térmicas",
+      category: "Suministros",
       currentQty: 15,
-    }
+    },
   ];
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-6">
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">Alerta de Inventario Bajo</h2>
-      
+    <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+      <h2 className="text-xl font-semibold text-gray-800 mb-5">
+        Alertas de Inventario Bajo
+      </h2>
+
       {/* Desktop Table */}
       <div className="hidden md:block overflow-x-auto">
-        <table className="min-w-full">
+        <table className="min-w-full text-sm">
           <thead>
-            <tr className="border-b border-gray-200">
-              <th className="text-left py-3 px-2 text-sm font-medium text-gray-600">Producto</th>
-              <th className="text-left py-3 px-2 text-sm font-medium text-gray-600">Categoria/Cantidad</th>
-              <th className="text-left py-3 px-2 text-sm font-medium text-gray-600">Acción</th>
+            <tr className="border-b border-gray-200 text-gray-600">
+              <th className="text-left py-3 px-2 font-medium">Producto</th>
+              <th className="text-left py-3 px-2 font-medium">Categoría</th>
+              <th className="text-left py-3 px-2 font-medium">Cantidad Actual</th>
+              <th className="text-left py-3 px-2 font-medium">Acción</th>
             </tr>
           </thead>
           <tbody>
             {alerts.map((alert) => (
-              <tr key={alert.id} className="border-b border-gray-100 last:border-b-0">
-                <td className="py-3 px-2 text-sm text-gray-800">{alert.product}</td>
-                <td className="py-3 px-2 text-sm text-gray-600">
-                  {alert.category}{alert.currentQty}
-                </td>
+              <tr
+                key={alert.id}
+                className="border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors"
+              >
+                <td className="py-3 px-2 text-gray-800 font-medium">{alert.product}</td>
+                <td className="py-3 px-2 text-gray-600">{alert.category}</td>
+                <td className="py-3 px-2 text-gray-800">{alert.currentQty}</td>
                 <td className="py-3 px-2">
-                  <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                  <button className="text-blue-600 hover:text-blue-800 font-medium transition-colors">
                     Ver
                   </button>
                 </td>
@@ -64,17 +69,25 @@ const LowInventoryAlerts: React.FC = () => {
       {/* Mobile Cards */}
       <div className="md:hidden space-y-4">
         {alerts.map((alert) => (
-          <div key={alert.id} className="border border-gray-200 rounded-lg p-4">
-            <div className="flex justify-between items-start mb-2">
-              <h3 className="font-medium text-gray-800">{alert.product}</h3>
-              <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
+          <div
+            key={alert.id}
+            className="border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div className="flex justify-between items-start mb-3">
+              <h3 className="font-semibold text-gray-800">{alert.product}</h3>
+              <button className="text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors">
                 Ver
               </button>
             </div>
-            <div className="grid grid-cols-2 gap-2 text-sm">
+
+            <div className="flex justify-between text-sm text-gray-700">
               <div>
-                <span className="text-gray-600">Categoria/Cantidad:</span>
-                <span className="ml-1 text-gray-800">{alert.category}{alert.currentQty}</span>
+                <span className="block text-gray-500 text-xs">Categoría</span>
+                {alert.category}
+              </div>
+              <div>
+                <span className="block text-gray-500 text-xs">Cantidad</span>
+                {alert.currentQty}
               </div>
             </div>
           </div>

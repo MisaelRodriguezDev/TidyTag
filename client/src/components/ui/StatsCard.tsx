@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface StatsCardProps {
   title: string;
@@ -6,11 +6,15 @@ interface StatsCardProps {
   className?: string;
 }
 
-const StatsCard: React.FC<StatsCardProps> = ({ title, value, className = '' }) => {
+const StatsCard: React.FC<StatsCardProps> = ({ title, value, className = "" }) => {
   return (
-    <div className={`${className}`}>
-      <h3 className="text-lg font-semibold text-gray-600 mb-2">{title}</h3>
-      <p className="text-3xl font-bold text-gray-800">{value}</p>
+    <div
+      className={`bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow ${className}`}
+    >
+      <h3 className="text-sm font-medium text-gray-500 mb-1 uppercase tracking-wide">
+        {title}
+      </h3>
+      <p className="text-3xl font-bold text-gray-900">{value}</p>
     </div>
   );
 };

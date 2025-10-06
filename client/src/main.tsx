@@ -5,7 +5,7 @@ import App from './App.tsx'
 import env from './config/env';
 
 function render() {
-  if (env.enviroment === 'development') {
+  if (env.environment === 'development') {
     return (
       < StrictMode > 
         <App />
