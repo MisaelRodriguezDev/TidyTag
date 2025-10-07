@@ -35,9 +35,9 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose, onSave })
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
-      <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
+      <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md animate-fadeIn">
+        <h2 className="text-2xl font-semibold text-gray-800 mb-6">
           {product ? "Editar Producto" : "Agregar Producto"}
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -47,7 +47,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose, onSave })
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-200"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-150"
           />
           <input
             type="text"
@@ -55,7 +55,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose, onSave })
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             required
-            className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-200"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-150"
           />
           <input
             type="number"
@@ -63,7 +63,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose, onSave })
             value={stock}
             onChange={(e) => setStock(Number(e.target.value))}
             required
-            className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-200"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-150"
           />
           <input
             type="number"
@@ -71,19 +71,19 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose, onSave })
             value={price}
             onChange={(e) => setPrice(Number(e.target.value))}
             required
-            className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-200"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-150"
           />
-          <div className="flex justify-end gap-2">
+          <div className="flex justify-end gap-3 mt-4">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100"
+              className="px-5 py-2 rounded-lg border border-gray-300 hover:bg-gray-100 text-gray-700 transition duration-150"
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+              className="px-5 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 shadow-md transition duration-150"
             >
               Guardar
             </button>

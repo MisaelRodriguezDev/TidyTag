@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Header from "../components/ui/Header";
 import InventoryTable from "../components/ui/Inventory/InventoryTable";
 import SearchBar from "../components/ui/Inventory/SearchBar";
 import InventoryFilters from "../components/ui/Inventory/InventoryFilters";
@@ -63,8 +62,6 @@ const Inventory: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
-
       <div className="container mx-auto px-4 py-6">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-semibold text-gray-800">Inventario</h1>
