@@ -1,10 +1,17 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
+import logo from "/tidytag.png";
+
+const navLinks = [
+  { to: "/", label: "Inicio" },
+  { to: "/inventario", label: "Inventario" },
+  { to: "/estadisticas", label: "Estadísticas" },
+  { to: "/perfil", label: "Perfil" },
+];
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Clase para el link activo
   const activeClass = "text-blue-600 font-medium";
   const inactiveClass = "text-gray-600 hover:text-gray-900 font-medium";
 
@@ -13,10 +20,14 @@ const Header: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">
           {/* Logo/Brand */}
-          <h1 className="text-2xl font-bold text-gray-800">TidyTag</h1>
+          <NavLink to="/" className="flex items-center gap-2">
+            <img src={logo} alt="Logo de TidyTag" width={40} className="rounded-md" />
+            <h1 className="text-2xl font-bold text-gray-800">TidyTag</h1>
+          </NavLink>
 
           {/* Mobile Menu Button */}
           <button
+            aria-label="Abrir menú"
             className="md:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
@@ -37,64 +48,31 @@ const Header: React.FC = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-6">
-            <NavLink
-              to="/"
-              className={({ isActive }) => (isActive ? activeClass : inactiveClass)}
-            >
-              Inicio
-            </NavLink>
-            <NavLink
-              to="/inventario"
-              className={({ isActive }) => (isActive ? activeClass : inactiveClass)}
-            >
-              Inventario
-            </NavLink>
-            <NavLink
-              to="/estadisticas"
-              className={({ isActive }) => (isActive ? activeClass : inactiveClass)}
-            >
-              Estadísticas
-            </NavLink>
-            <NavLink
-              to="/perfil"
-              className={({ isActive }) => (isActive ? activeClass : inactiveClass)}
-            >
-              Perfil
-            </NavLink>
+            {navLinks.map(({ to, label }) => (
+              <NavLink
+                key={to}
+                to={to}
+                className={({ isActive }) => (isActive ? activeClass : inactiveClass)}
+              >
+                {label}
+              </NavLink>
+            ))}
           </nav>
         </div>
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t flex flex-col space-y-2">
-            <NavLink
-              to="/"
-              className={({ isActive }) => (isActive ? activeClass : inactiveClass)}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Inicio
-            </NavLink>
-            <NavLink
-              to="/inventario"
-              className={({ isActive }) => (isActive ? activeClass : inactiveClass)}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Inventario
-            </NavLink>
-            <NavLink
-              to="/estadisticas"
-              className={({ isActive }) => (isActive ? activeClass : inactiveClass)}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Estadísticas
-            </NavLink>
-            <NavLink
-              to="/perfil"
-              className={({ isActive }) => (isActive ? activeClass : inactiveClass)}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Perfil
-            </NavLink>
+            {navLinks.map(({ to, label }) => (
+              <NavLink
+                key={to}
+                to={to}
+                className={({ isActive }) => (isActive ? activeClass : inactiveClass)}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {label}
+              </NavLink>
+            ))}
           </div>
         )}
       </div>

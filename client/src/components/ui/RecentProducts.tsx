@@ -1,5 +1,3 @@
-import React from "react";
-
 interface Product {
   id: number;
   name: string;
@@ -8,7 +6,20 @@ interface Product {
   quantity: number;
 }
 
-const RecentProducts: React.FC = () => {
+const RecentProducts = () => {
+
+  function setColorByStock(qty: number) {
+    let style = ''
+    if (qty <= 10) {
+      style = "bg-red-50 text-red-700"
+    } else if (qty <= 20) {
+      style = "bg-yellow-50 text-yellow-700"
+    } else {
+      style = "bg-blue-50 text-blue-700"
+    }
+    return style
+  }
+
   const products: Product[] = [
     {
       id: 1,
@@ -35,7 +46,7 @@ const RecentProducts: React.FC = () => {
 
   return (
     <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
-      <h2 className="text-xl font-semibold text-gray-800 mb-5">
+      <h2 className="text-2xl font-semibold text-gray-800 mb-5">
         Productos Recientes
       </h2>
 
@@ -48,20 +59,14 @@ const RecentProducts: React.FC = () => {
             {/* Información del producto */}
             <div className="flex-1">
               <h3 className="font-semibold text-gray-900">{product.name}</h3>
-              <p className="text-sm text-gray-600 mt-1">
+              <p className="text-md text-gray-600 mt-1">
                 {product.category} • {product.updated}
               </p>
             </div>
 
             {/* Cantidad */}
             <div
-              className={`px-3 py-1 rounded-full text-sm font-medium ${
-                product.quantity <= 10
-                  ? "bg-red-50 text-red-700"
-                  : product.quantity <= 20
-                  ? "bg-yellow-50 text-yellow-700"
-                  : "bg-blue-50 text-blue-700"
-              }`}
+              className={`px-3 py-1 rounded-full text-md font-medium ${setColorByStock(product.quantity)}`}
             >
               {product.quantity} unidades
             </div>

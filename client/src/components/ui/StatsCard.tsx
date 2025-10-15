@@ -11,10 +11,10 @@ const StatsCard: React.FC<StatsCardProps> = ({ title, value, className = "" }) =
     <div
       className={`bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow ${className}`}
     >
-      <h3 className="text-sm font-medium text-gray-500 mb-1 uppercase tracking-wide">
+      <h3 className="text-sm font-medium text-gray-500 mb-1 uppercase tracking-wide text-center">
         {title}
       </h3>
-      <p className="text-3xl font-bold text-gray-900">{value}</p>
+      <p className="text-3xl font-bold text-gray-900 text-center">{value}</p>
     </div>
   );
 };

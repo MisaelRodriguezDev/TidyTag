@@ -14,6 +14,7 @@ export default function AppRoutes() {
             <Route path="/inventario" element={<Inventory/>}/>
             <Route path="/perfil" element={<Profile/>}/>
           </Route>
+          I
         </Routes>
     </BrowserRouter>
   );
