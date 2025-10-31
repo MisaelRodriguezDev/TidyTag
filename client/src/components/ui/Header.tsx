@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import logo from "/tidytag.png";
+import ConnectionStatus from "./ConnectionStatus";
 
 const navLinks = [
   { to: "/", label: "Inicio" },
@@ -19,11 +20,14 @@ const Header: React.FC = () => {
     <header className="bg-white shadow-sm border-b">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">
-          {/* Logo/Brand */}
-          <NavLink to="/" className="flex items-center gap-2">
-            <img src={logo} alt="Logo de TidyTag" width={40} className="rounded-md" />
-            <h1 className="text-2xl font-bold text-gray-800">TidyTag</h1>
-          </NavLink>
+          <div className="flex justify-between items-center">
+            {/* Logo/Brand */}
+            <NavLink to="/" className="flex items-center gap-2 mr-4">
+              <img src={logo} alt="Logo de TidyTag" width={40} className="rounded-md" />
+              <h1 className="text-2xl font-bold text-gray-800">TidyTag</h1>
+            </NavLink>
+            <ConnectionStatus/>
+          </div>
 
           {/* Mobile Menu Button */}
           <button

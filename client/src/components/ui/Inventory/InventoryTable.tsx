@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import type ProductType from "../../../types/Product";
+import type {Product} from "../../../types/Product";
 import formattedPrice from "../../../utils/formattedPrice";
 import BaseModal from "../common/Modal";
 
 interface InventoryTableProps {
-  products: ProductType[];
-  onEdit?: (product: ProductType) => void;
+  products: Product[];
+  onEdit?: (product: Product) => void;
   onDelete?: (id: string) => void;
   onUpdateQuantity?: (id: string, newQuantity: number) => void;
 }
@@ -42,12 +42,12 @@ const InventoryTable: React.FC<InventoryTableProps> = ({
   onUpdateQuantity,
 }) => {
   // Estado para controlar el modal
-  const [selectedProduct, setSelectedProduct] = useState<ProductType | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isRestockMode, setIsRestockMode] = useState<boolean>(false);
   const [quantity, setQuantity] = useState<number>(1);
 
   // Abrir modal con modo (vender o reabastecer)
-  const openModal = (product: ProductType, restock: boolean) => {
+  const openModal = (product: Product, restock: boolean) => {
     setSelectedProduct(product);
     setIsRestockMode(restock);
     setQuantity(1);

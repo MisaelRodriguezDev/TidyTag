@@ -1,48 +1,29 @@
-interface Product {
-  id: number;
-  name: string;
-  category: string;
-  updated: string;
-  quantity: number;
-}
+import React, { useEffect, useState } from "react";
+import type { Product } from "../../types/Product";
+import formattedDate from "../../utils/formattedDate";
 
-const RecentProducts = () => {
+const RecentProducts: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>([]);
 
-  function setColorByStock(qty: number) {
-    let style = ''
-    if (qty <= 10) {
-      style = "bg-red-50 text-red-700"
-    } else if (qty <= 20) {
-      style = "bg-yellow-50 text-yellow-700"
-    } else {
-      style = "bg-blue-50 text-blue-700"
+  // Cargar productos desde localStorage al montar
+  useEffect(() => {
+    const items = localStorage.getItem("products");
+    if (items) {
+      try {
+        const parsed: Product[] = JSON.parse(items);
+        setProducts(parsed);
+      } catch (error) {
+        console.error("Error al parsear productos desde localStorage:", error);
+      }
     }
-    return style
-  }
+  }, []);
 
-  const products: Product[] = [
-    {
-      id: 1,
-      name: "Cajas Kraft (Pequeñas)",
-      category: "Empaque",
-      updated: "Actualizado hace 20 días",
-      quantity: 12,
-    },
-    {
-      id: 2,
-      name: "Escáner de Códigos de Barras USB",
-      category: "Tecnología",
-      updated: "Agregado hace 14 días",
-      quantity: 48,
-    },
-    {
-      id: 3,
-      name: "Bolsas de Papel (L)",
-      category: "Empaque",
-      updated: "Actualizado hace 30 días",
-      quantity: 8,
-    },
-  ];
+  // Función para definir colores según stock
+  function setColorByStock(qty: number) {
+    if (qty <= 10) return "bg-red-50 text-red-700";
+    if (qty <= 20) return "bg-yellow-50 text-yellow-700";
+    return "bg-blue-50 text-blue-700";
+  }
 
   return (
     <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
@@ -60,13 +41,15 @@ const RecentProducts = () => {
             <div className="flex-1">
               <h3 className="font-semibold text-gray-900">{product.name}</h3>
               <p className="text-md text-gray-600 mt-1">
-                {product.category} • {product.updated}
+                {product.category} • {formattedDate(product.updated_at, 'last_modification')}
               </p>
             </div>
 
             {/* Cantidad */}
             <div
-              className={`px-3 py-1 rounded-full text-md font-medium ${setColorByStock(product.quantity)}`}
+              className={`px-3 py-1 rounded-full text-md font-medium ${setColorByStock(
+                product.quantity
+              )}`}
             >
               {product.quantity} unidades
             </div>

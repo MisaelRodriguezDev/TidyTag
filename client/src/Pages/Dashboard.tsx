@@ -1,47 +1,65 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import StatsCard from "../components/ui/StatsCard";
 import RecentProducts from "../components/ui/RecentProducts";
 import LowInventoryAlerts from "../components/ui/LowInventoryAlerts";
+import type { Product } from "../types/Product";
 
 const Dashboard: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [info, setInfo] = useState<{
+    total: number;
+    valor: number;
+    low: number;
+    categories: number;
+  }>({
+    total: 0,
+    valor: 0,
+    low: 0,
+    categories: 0,
+  });
 
-  const fetchProductData = async (barcode: string): Promise<void> => {
-  try {
-    const response = await fetch(`https://world.openfoodfacts.org/api/v2/product/${barcode}.json`);
-    const data = await response.json();
-
-    if (data.status === 1 && data.product) {
-      console.log('Nombre del producto:', data.product.product_name);
-      console.log('Marca:', data.product.brands);
-      console.log('Ingredientes:', data.product.ingredients_text);
-      console.log('Nutri-Score:', data.product.nutrition_grades);
-      console.log('Imagen:', data.product.image_url);
-    } else {
-      console.log('Producto no encontrado o datos incompletos.');
+  // Cargar productos desde localStorage
+  useEffect(() => {
+    const items = localStorage.getItem("products");
+    if (items) {
+      try {
+        const parsed: Product[] = JSON.parse(items);
+        setProducts(parsed);
+      } catch {
+        console.error("Error al parsear productos en localStorage");
+      }
     }
-  } catch (error) {
-    console.error('Error al obtener los datos del producto:', error);
-  }
-};
+  }, []);
 
-// Llamada a la función con el código de barras proporcionado
-fetchProductData('8480000101365');
+  // Actualizar info cada vez que cambian los productos
+  useEffect(() => {
+    const acumulado = products.reduce((sum, p) => sum + p.quantity * p.price, 0);
+    const low = products.filter(p => p.quantity <= 10).length;
+    const categories = new Set(products.map(p => p.category)).size;
+
+    setInfo({
+      total: products.length,
+      valor: acumulado,
+      low,
+      categories,
+    });
+  }, [products]);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-        {/* Sección de estadísticas */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-          <StatsCard title="Total de Productos" value="1,284" />
-          <StatsCard title="Valor Total" value="$86,420" />
-          <StatsCard title="Categorías" value="12" />
-          <StatsCard title="Bajo Inventario" value="3" />
-        </section>
+      {/* Sección de estadísticas */}
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+        <StatsCard title="Total de Productos" value={`${info.total}`} />
+        <StatsCard title="Valor Total" value={`$ ${info.valor.toLocaleString()}`} />
+        <StatsCard title="Categorías" value={`${info.categories}`} />
+        <StatsCard title="Bajo Inventario" value={`${info.low}`} />
+      </section>
 
-        {/* Sección de contenido principal */}
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <RecentProducts />
-          <LowInventoryAlerts />
-        </section>
+      {/* Sección de contenido principal */}
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <RecentProducts />
+        <LowInventoryAlerts />
+      </section>
     </div>
   );
 };

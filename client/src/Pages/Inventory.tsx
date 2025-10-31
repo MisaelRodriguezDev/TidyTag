@@ -6,7 +6,8 @@ import BaseModal from "../components/ui/common/Modal";
 import CreateProductForm from "../components/ui/Inventory/CreateProductForm";
 import UpdateProductForm from "../components/ui/Inventory/UpdateProductForm";
 import BarcodeScanner from "../components/ui/Barcode/BarcodeScanner";
-import type Product from "../types/Product";
+import type {Product} from "../types/Product";
+import getProductDataByBarcode from "../services/barcode.service";
 
 // Iconos para los botones (puedes reemplazar con tus propios iconos)
 const ScanIcon = () => (
@@ -23,11 +24,13 @@ const AddIcon = () => (
 
 const Inventory: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [productInfo, setProductInfo] = useState<Partial<Product>>();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [isScannerOpen, setIsScannerOpen] = useState(false);
+
 
   useEffect(() => {
     const items = localStorage.getItem("products");
@@ -81,6 +84,7 @@ const Inventory: React.FC = () => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    setProductInfo(undefined)
     const items = localStorage.getItem("products");
     if (items) {
       try {
@@ -90,6 +94,10 @@ const Inventory: React.FC = () => {
       }
     }
   };
+
+    const fetchProductData = async (barcode: string) => {
+      return await getProductDataByBarcode(barcode)
+};
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -168,7 +176,7 @@ const Inventory: React.FC = () => {
           {editingProduct ? (
             <UpdateProductForm product={editingProduct} onClose={handleCloseModal} />
           ) : (
-            <CreateProductForm onClose={handleCloseModal} />
+            <CreateProductForm onClose={handleCloseModal} product={productInfo} />
           )}
         </BaseModal>
       )}
@@ -182,7 +190,15 @@ const Inventory: React.FC = () => {
           <div className="p-2 sm:p-4">
             <BarcodeScanner
               onScan={(code) => {
-                alert(`Código detectado: ${code}`);
+                fetchProductData(code)
+      .then((product) => {
+        setProductInfo(product)
+        openAddModal();
+      })
+      .catch((err) => {
+        alert("No se pudo obtener la información del producto.");
+        console.error(err);
+      });
                 setIsScannerOpen(false);
               }}
               onError={(err) => console.error("Error escáner:", err)}

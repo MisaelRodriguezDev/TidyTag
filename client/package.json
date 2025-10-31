@@ -8,10 +8,13 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "serve": "bun run build && bun run preview",
     "tailwind:init": "tailwindcss init -p"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
+    "@tanstack/react-query": "^5.90.5",
+    "axios": "^1.12.2",
     "html5-qrcode": "^2.3.8",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

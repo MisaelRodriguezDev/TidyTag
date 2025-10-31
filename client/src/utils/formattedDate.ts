@@ -1,6 +1,6 @@
 type Option = "formatted" | "last_modification";
 
-function formattedDate(dateString: string, option: Option = "formatted"): string | number {
+function formattedDate(dateString: string, option: Option = "formatted"): string {
   const date = new Date(dateString);
 
   if (isNaN(date.getTime())) {
@@ -25,9 +25,12 @@ function formattedDate(dateString: string, option: Option = "formatted"): string
   // Opción last_modification: calcular días transcurridos
   const today = new Date();
   const diffMs = today.getTime() - date.getTime();
-  const daysTranscurred = diffMs / (1000 * 60 * 60 * 24);
+  const daysTranscurred = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-  return Math.round(daysTranscurred);
+  if (daysTranscurred === 0) return "hoy";
+  if (daysTranscurred === 1) return "hace 1 día";
+
+  return `hace ${daysTranscurred} días`;
 }
 
 export default formattedDate;

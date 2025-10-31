@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createProductSchema, type CreateProductInput } from "../../../schemas/Product";
 
-const CreateProductForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+const CreateProductForm: React.FC<{ onClose: () => void, product?: Partial<CreateProductInput> }> = ({ onClose, product }) => {
   const {
     register,
     handleSubmit,
@@ -11,16 +11,30 @@ const CreateProductForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     reset,
   } = useForm<CreateProductInput>({
     resolver: zodResolver(createProductSchema),
+    defaultValues: product ?? {}
   });
 
-  const onSubmit = (data: CreateProductInput) => {
-    const items = localStorage.getItem("products");
-    const existing = items ? JSON.parse(items) : [];
-    const updated = [...existing, {...data, id: Date.now()}];
-    localStorage.setItem("products", JSON.stringify(updated));
-    reset();
-    onClose();
-  };
+const onSubmit = (data: CreateProductInput) => {
+  const items = localStorage.getItem("products");
+  const existing = items ? JSON.parse(items) : [];
+
+  const timestamp = new Date().toISOString();
+
+  const updated = [
+    ...existing,
+    {
+      ...data,
+      id: Date.now(),
+      created_at: timestamp,
+      updated_at: timestamp,
+    },
+  ];
+
+  localStorage.setItem("products", JSON.stringify(updated));
+  reset();
+  onClose();
+};
+
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import type { Product } from "../../../types/Product";
 
 interface InventoryFiltersProps {
   category: string;
@@ -9,6 +10,18 @@ const InventoryFilters: React.FC<InventoryFiltersProps> = ({
   category,
   onCategoryChange,
 }) => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const categories = Array.from(new Set(products.map(p => p.category)))
+    useEffect(() => {
+    const items = localStorage.getItem("products");
+    if (items) {
+      try {
+        setProducts(JSON.parse(items));
+      } catch {
+        console.error("Error al parsear productos en localStorage");
+      }
+    }
+  }, []);
   return (
     <div className="mb-6 flex gap-4">
       <select
@@ -17,9 +30,11 @@ const InventoryFilters: React.FC<InventoryFiltersProps> = ({
         className="border border-gray-300 rounded-lg px-4 py-2 focus:ring focus:ring-blue-200"
       >
         <option value="">Todas las categorías</option>
-        <option value="Electrónica">Electrónica</option>
-        <option value="Hogar">Hogar</option>
-        <option value="Oficina">Oficina</option>
+        {categories.map((cat) => (
+        <option key={cat} value={cat}>
+          {cat}
+        </option>
+      ))}
       </select>
     </div>
   );

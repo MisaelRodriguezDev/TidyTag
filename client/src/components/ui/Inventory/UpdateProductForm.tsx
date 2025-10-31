@@ -5,7 +5,7 @@ import {
   updateProductSchema,
   type UpdateProductInput,
 } from "../../../schemas/Product";
-import type Product from "../../../types/Product";
+import type {Product} from "../../../types/Product";
 
 interface UpdateProductFormProps {
   product: Product; // 👈 Pasamos el producto seleccionado
@@ -31,37 +31,41 @@ const UpdateProductForm: React.FC<UpdateProductFormProps> = ({
     if (product) reset(product);
   }, [product, reset]);
 
-  const onSubmit = (data: UpdateProductInput) => {
-    const items = localStorage.getItem("products");
-    if (!items) return;
+const onSubmit = (data: UpdateProductInput) => {
+  const items = localStorage.getItem("products");
+  if (!items) return;
 
-    let products: Product[] = [];
+  let products: Product[] = [];
 
-    try {
-      products = JSON.parse(items);
-    } catch (error) {
-      console.error("Error al parsear productos:", error);
-      return;
+  try {
+    products = JSON.parse(items);
+  } catch (error) {
+    console.error("Error al parsear productos:", error);
+    return;
+  }
+
+  const timestamp = new Date().toISOString();
+
+  const updatedProducts = products.map((p) => {
+    if (p.barcode === data.barcode) {
+      return {
+        ...p,
+        ...Object.fromEntries(
+          Object.entries(data).filter(
+            ([key, value]) =>
+              value !== undefined && p[key as keyof Product] !== value
+          )
+        ),
+        created_at: timestamp, // actualizamos created_at al momento actual
+      };
     }
+    return p;
+  });
 
-    const updatedProducts = products.map((p) => {
-      if (p.barcode === data.barcode) {
-        return {
-          ...p,
-          ...Object.fromEntries(
-            Object.entries(data).filter(
-              ([key, value]) =>
-                value !== undefined && p[key as keyof Product] !== value
-            )
-          ),
-        };
-      }
-      return p;
-    });
+  localStorage.setItem("products", JSON.stringify(updatedProducts));
+  onClose();
+};
 
-    localStorage.setItem("products", JSON.stringify(updatedProducts));
-    onClose();
-  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

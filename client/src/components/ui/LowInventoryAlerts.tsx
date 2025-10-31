@@ -1,4 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
+interface Product {
+  id: number;
+  name: string;
+  category?: string;
+  quantity: number;
+}
 
 interface Alert {
   id: number;
@@ -8,9 +15,7 @@ interface Alert {
 }
 
 const AlertRow: React.FC<{ alert: Alert }> = ({ alert }) => (
-  <tr
-    className="border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors"
-  >
+  <tr className="border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors">
     <td className="py-3 px-2 text-gray-800 font-medium">{alert.product}</td>
     <td className="py-3 px-2 text-gray-600">{alert.category}</td>
     <td className="py-3 px-2 text-gray-800 text-center">{alert.currentQty}</td>
@@ -18,10 +23,7 @@ const AlertRow: React.FC<{ alert: Alert }> = ({ alert }) => (
 );
 
 const AlertCard: React.FC<{ alert: Alert }> = ({ alert }) => (
-  <div
-    className="border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
-  >
-
+  <div className="border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
     <div className="flex justify-between text-sm text-gray-700">
       <div>
         <span className="block text-gray-500 text-xs">Categoría</span>
@@ -36,11 +38,31 @@ const AlertCard: React.FC<{ alert: Alert }> = ({ alert }) => (
 );
 
 const LowInventoryAlerts: React.FC = () => {
-  const alerts: Alert[] = [
-    { id: 1, product: "Cajas Kraft (Pequeñas)", category: "Empaque", currentQty: 12 },
-    { id: 2, product: "Bolsas de Papel (L)", category: "Empaque", currentQty: 8 },
-    { id: 3, product: "Etiquetas Térmicas", category: "Suministros", currentQty: 15 }
-  ];
+  const [alerts, setAlerts] = useState<Alert[]>([]);
+
+  useEffect(() => {
+    const items = localStorage.getItem("products");
+    if (!items) return;
+
+    try {
+      const products: Product[] = JSON.parse(items);
+
+      const lowStockAlerts: Alert[] = products
+        .filter(p => p.quantity <= 10) // inventario bajo si qty <= 10
+        .map((p, index) => ({
+          id: p.id ?? index,
+          product: p.name,
+          category: p.category,
+          currentQty: p.quantity,
+        }));
+
+      setAlerts(lowStockAlerts);
+    } catch (error) {
+      console.error("Error al parsear productos desde localStorage:", error);
+    }
+  }, []);
+
+  if (alerts.length === 0) return null;
 
   return (
     <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
@@ -59,7 +81,7 @@ const LowInventoryAlerts: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {alerts.map((alert) => (
+            {alerts.map(alert => (
               <AlertRow key={alert.id} alert={alert} />
             ))}
           </tbody>
@@ -68,7 +90,7 @@ const LowInventoryAlerts: React.FC = () => {
 
       {/* Mobile Cards */}
       <div className="md:hidden space-y-4">
-        {alerts.map((alert) => (
+        {alerts.map(alert => (
           <AlertCard key={alert.id} alert={alert} />
         ))}
       </div>
