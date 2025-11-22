@@ -2,12 +2,59 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/tidytag.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TidyTag</title>
+
+    <!-- Título y descripción -->
+    <title>TidyTag - Gestión de Inventario con Escaneo de Códigos de Barras</title>
+    <meta name="description" content="TidyTag es una PWA para gestionar inventarios de manera rápida y eficiente, con escaneo de códigos de barras y control de stock en tiempo real." />
+    <meta name="keywords" content="inventario, gestión de inventario, código de barras, PWA, escaneo, stock, control de inventario, TidyTag" />
+    <meta name="author" content="TidyTag Team" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/tidytag.png" />
+
+    <!-- Apple touch icon -->
+    <link rel="apple-touch-icon" href="/tidytag.png" />
+
+    <!-- Open Graph (redes sociales) -->
+    <meta property="og:title" content="TidyTag - Gestión de Inventario con Escaneo de Códigos de Barras" />
+    <meta property="og:description" content="Gestiona tu inventario de manera eficiente con TidyTag, PWA que permite escaneo de códigos de barras y control de stock en tiempo real." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://localhost:5173" />
+    <meta property="og:image" content="http://localhost:5173/tidytag.png" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="TidyTag - Gestión de Inventario con Escaneo de Códigos de Barras" />
+    <meta name="twitter:description" content="Gestiona tu inventario de manera eficiente con TidyTag, PWA que permite escaneo de códigos de barras y control de stock en tiempo real." />
+    <meta name="twitter:image" content="http://localhost:5173/tidytag.png" />
+
+    <!-- Canonical -->
+    <link rel="canonical" href="http://localhost:5173" />
+
+    <!-- PWA manifest (vite-plugin-pwa se encarga de generar) -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#4A90E2" />
+
+    <!-- JSON-LD para app -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "TidyTag",
+      "operatingSystem": "Web",
+      "applicationCategory": "BusinessApplication",
+      "description": "TidyTag es una PWA para gestionar inventarios con escaneo de códigos de barras.",
+      "url": "http://localhost:5173",
+      "image": "http://localhost:5173/tidytag.png"
+    }
+    </script>
+
+    <!-- Script principal -->
+    <script type="module" src="/src/main.tsx"></script>
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

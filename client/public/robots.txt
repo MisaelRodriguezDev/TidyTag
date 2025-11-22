@@ -1,0 +1,12 @@
+# robots.txt para TidyTag PWA - Gestión de Inventario
+# Bloquea rutas privadas y permite indexar lo público
+
+User-agent: *
+Disallow: /api/
+Disallow: /admin/
+Disallow: /login/
+Disallow: /config/
+Allow: /
+
+# Sitemap para mejorar la indexación
+Sitemap: http://localhost:4173/sitemap.xml
