@@ -3,6 +3,7 @@ import Layout from "../components/layout/layout";
 import Home from "../Pages/Dashboard";
 import Inventory from "../Pages/Inventory"
 import Profile from "../Pages/Profile";
+import NotFoundPage from "../Pages/NotFound";
 
 export default function AppRoutes() {
   return (
@@ -14,7 +15,7 @@ export default function AppRoutes() {
             <Route path="/inventario" element={<Inventory/>}/>
             <Route path="/perfil" element={<Profile/>}/>
           </Route>
-          I
+          I<Route path="*" element={<NotFoundPage/>}/>
         </Routes>
     </BrowserRouter>
   );

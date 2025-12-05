@@ -1,37 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
+import env from "../../config/env";
 
-const SERVER_URL = "https://tu-servidor.com/api/health"; // 🔁 cámbialo por tu endpoint
+const SERVER_URL = `${env.SERVER_URL}/api/health`;
 
 type ConnectionState = "offline" | "connected" | "synced";
 
 const ConnectionStatus: React.FC = () => {
   const [status, setStatus] = useState<ConnectionState>("offline");
 
-  const checkConnection = async () => {
+  const checkConnection = useCallback(async () => {
     try {
       const response = await axios.get(SERVER_URL, { timeout: 3000 });
-
-      if (response.status === 200) {
-        setStatus("synced");
-      } else {
-        setStatus("connected");
-      }
-    } catch {
-      try {
-        await axios.get("https://www.google.com/generate_204", { timeout: 3000 });
-        setStatus("connected");
-      } catch {
+      setStatus(response.status === 200 ? "synced" : "connected");
+    } catch (error) {
+      // Verifica si hay error de red (offline) o error del servidor (connected pero no responde)
+      if (axios.isAxiosError(error) && !error.response) {
+        // Error de red - probablemente sin conexión
         setStatus("offline");
+      } else {
+        // El servidor respondió con error, pero hay conexión
+        setStatus("connected");
       }
     }
-  };
+  }, []);
 
   useEffect(() => {
     checkConnection();
     const interval = setInterval(checkConnection, 10000);
     return () => clearInterval(interval);
-  }, []);
+  }, [checkConnection]);
 
   const getStyle = () => {
     switch (status) {

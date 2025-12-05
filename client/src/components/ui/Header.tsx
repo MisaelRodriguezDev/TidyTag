@@ -6,7 +6,7 @@ import ConnectionStatus from "./ConnectionStatus";
 const navLinks = [
   { to: "/", label: "Inicio" },
   { to: "/inventario", label: "Inventario" },
-  { to: "/estadisticas", label: "Estadísticas" },
+  //{ to: "/estadisticas", label: "Estadísticas" },
   { to: "/perfil", label: "Perfil" },
 ];
 

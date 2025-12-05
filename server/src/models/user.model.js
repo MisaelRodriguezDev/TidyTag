@@ -1,5 +1,5 @@
 import { DataTypes } from "sequelize";
-import sequelize from "../config/db.config";
+import sequelize from "../config/db.config.js";
 
 const User = sequelize.define("User", {
     id: {
@@ -7,7 +7,7 @@ const User = sequelize.define("User", {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true
     },
-    first_name: {
+    firstName: {
         type: DataTypes.STRING(100),
         allowNull: false
     },

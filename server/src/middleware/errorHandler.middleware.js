@@ -1,4 +1,4 @@
-import { AppError } from '../errors';
+import { AppError } from '../errors/index.js';
 
 /**
  * @module Middleware/Error

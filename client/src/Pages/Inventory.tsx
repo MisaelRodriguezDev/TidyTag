@@ -99,6 +99,19 @@ const Inventory: React.FC = () => {
       return await getProductDataByBarcode(barcode)
 };
 
+  const getProductInfoByBarcode = async (barcode: string) => {
+    try {
+      const data = await fetchProductData(barcode)
+      setProductInfo(data)
+      openAddModal()
+    } catch (error) {
+      alert("Error we")
+      console.error(error)
+    } finally {
+      setIsScannerOpen(false);
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6">
@@ -189,18 +202,7 @@ const Inventory: React.FC = () => {
         >
           <div className="p-2 sm:p-4">
             <BarcodeScanner
-              onScan={(code) => {
-                fetchProductData(code)
-      .then((product) => {
-        setProductInfo(product)
-        openAddModal();
-      })
-      .catch((err) => {
-        alert("No se pudo obtener la información del producto.");
-        console.error(err);
-      });
-                setIsScannerOpen(false);
-              }}
+              onScan={(code) => getProductInfoByBarcode(code)}
               onError={(err) => console.error("Error escáner:", err)}
             />
           </div>

@@ -4,7 +4,7 @@ import { Html5Qrcode, type Html5QrcodeCameraScanConfig } from "html5-qrcode";
 interface BarcodeScannerProps {
   onScan: (code: string) => void;
   onError?: (error: string) => void;
-  onClose?: () => void; // ✅ Nueva prop
+  onClose?: () => void;
 }
 
 const BarcodeScanner: React.FC<BarcodeScannerProps> = ({

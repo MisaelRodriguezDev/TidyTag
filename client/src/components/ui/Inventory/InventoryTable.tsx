@@ -206,7 +206,7 @@ const InventoryTable: React.FC<InventoryTableProps> = ({
               <td className="px-3 sm:px-4 lg:px-6 py-4 text-gray-700">
                 $ {formattedPrice(product.price)}
               </td>
-              <td className="px-3 sm:px-4 lg:px-6 py-4 text-gray-700 font-mono text-sm hidden lg:table-cell">
+              <td className="px-3 sm:px-4 lg:px-6 py-4 text-gray-700 font-mono text-sm lg:table-cell">
                 {product.barcode}
               </td>
               <td className="px-3 sm:px-4 lg:px-6 py-4">

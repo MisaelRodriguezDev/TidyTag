@@ -7,7 +7,7 @@ export async function getAllProductsRequest(): Promise<ApiResponse<Product[]>> {
 }
 
 export async function getProductByIdRequest(id: string): Promise<ApiResponse<Product>> {
-    return await api.get(`/products${id}`)
+    return await api.get(`/products/${id}`)
 }
 
 export async function createProductRequest(data: CreateProductInput): Promise<ApiResponse<Product>> {

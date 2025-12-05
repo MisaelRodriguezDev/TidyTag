@@ -1,39 +1,58 @@
 //@ts-nocheck
-export class BaseRepository {
-    /**
-     * 
-     * @param {import('sequelize').Model} model 
-     */
+
+// repositories/BaseRepository.js
+class BaseRepository {
     constructor(model) {
-      this.model = model;
-    }   
-    
-    async findAll({ where = {}, limit = 10, offset = 0, include = [] } = {}) {
-      return this.model.findAll({ where, limit, offset, include });
-    }   
-    
-    async count(where = {}) {
-      return this.model.count({ where });
-    }   
-    
-    async findById(id, include = []) {
-      return this.model.findByPk(id, { include });
-    }   
-    
+        this.model = model;
+    }
+
     async create(data) {
-      return this.model.create(data);
-    }   
-    
+        try {
+            const result = await this.model.create(data);
+            return result;
+        } catch (error) {
+            throw new Error(error.message || "Error creando el registro.");
+        }
+    }
+
+    async findAll(options = {}) {
+        try {
+            const results = await this.model.findAll(options);
+            return results;
+        } catch (error) {
+            throw new Error(error.message || "Error obteniendo registros.");
+        }
+    }
+
+    async findById(id, options = {}) {
+        try {
+            const result = await this.model.findByPk(id, options);
+            if (!result) throw new Error("Registro no encontrado.");
+            return result;
+        } catch (error) {
+            throw new Error(error.message || "Error obteniendo registro.");
+        }
+    }
+
     async update(id, data) {
-      const record = await this.model.findByPk(id);
-      if (!record) return null;
-      return record.update(data);
-    }   
-    
+        try {
+            const record = await this.findById(id);
+            await record.update(data);
+            return record;
+        } catch (error) {
+            throw new Error(error.message || "Error actualizando registro.");
+        }
+    }
+
     async delete(id) {
-      const record = await this.model.findByPk(id);
-      if (!record) return null;
-      await record.destroy();
-      return true;
+        try {
+            const record = await this.findById(id);
+            await record.destroy();
+            return { message: "Registro eliminado correctamente." };
+        } catch (error) {
+            throw new Error(error.message || "Error eliminando registro.");
+        }
     }
 }
+
+export default BaseRepository;

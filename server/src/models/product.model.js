@@ -1,5 +1,5 @@
 import {DataTypes} from 'sequelize'
-import sequelize from '../config/db.config'
+import sequelize from '../config/db.config.js'
 
 const Product = sequelize.define('Product',{
     id: {
@@ -12,11 +12,11 @@ const Product = sequelize.define('Product',{
         allowNull: false
     },
     price: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.INTEGER,
         allowNull: false,
     },
     stock: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.INTEGER,
         allowNull: false,
     },
     barcode: {

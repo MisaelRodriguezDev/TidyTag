@@ -1,8 +1,7 @@
-import { configDotenv } from "dotenv";
 import { Sequelize } from "sequelize";
+import env from "./env.config.js"
 
 // Cargar las variables de entorno desde el archivo .env
-configDotenv()
 
 /**
  * @module Config/db
@@ -23,6 +22,7 @@ configDotenv()
  * @property {number} pool.idle - El tiempo en milisegundos antes de que se cierre una conexión inactiva.
  * @property {Object} dialectOptions - Opciones específicas para el dialecto de la base de datos.
  * @property {boolean} dialectOptions.useUTC - Si se debe usar UTC para las fechas y horas.
+ * @property {Object} dialectOptions.ssl - ssl
  * @property {string} timezone - La zona horaria utilizada en la conexión a la base de datos.
  */
 
@@ -32,11 +32,11 @@ configDotenv()
  */
 const OPTIONS = {
     //@ts-ignore
-    host: process.env.DB_HOST, // Host de la base de datos (ej. localhost)
+    host: env.DB_HOST, // Host de la base de datos (ej. localhost)
     //@ts-ignore
-    port: process.env.DB_PORT, // Puerto del servidor de base de datos (ej. 5432)
+    port: env.DB_PORT, // Puerto del servidor de base de datos (ej. 5432)
     //@ts-ignore
-    dialect: process.env.DB_DIALECT, // Dialecto de la base de datos (ej. 'postgres', 'mysql')
+    dialect: env.DB_DIALECT, // Dialecto de la base de datos (ej. 'postgres', 'mysql')
     define: {
         freezeTableName: true, // Evita que Sequelize cambie los nombres de las tablas automáticamente
         timestamps: true // Se crearán automáticamente los campos createdAt y updatedAt
@@ -47,7 +47,11 @@ const OPTIONS = {
         idle: 60 * 60 * 1000 // Tiempo en milisegundos antes de que se cierre una conexión inactiva
     },
     dialectOptions: {
-        useUTC: false // No usar UTC para fechas y horas
+        useUTC: false, // No usar UTC para fechas y horas
+        ssl: {
+            require: true,
+            rejectUnauthorized: false,  // Tried both true and false here
+      },
     },
     timezone: "-06:00" // Zona horaria para la conexión (ej. UTC-6), hora México
 }
@@ -57,10 +61,10 @@ const OPTIONS = {
  * @type {Sequelize}
  */
 const sequelize = new Sequelize(
+    env.DB_NAME, // Nombre de la base de datos
+    env.DB_USERNAME, // Usuario de la base de datos
+    env.DB_PASSWORD, // Contraseña de la base de datos
     //@ts-ignore
-    process.env.DB_NAME, // Nombre de la base de datos
-    process.env.DB_USER, // Usuario de la base de datos
-    process.env.DB_PASSWORD, // Contraseña de la base de datos
     OPTIONS // Opciones de configuración para Sequelize
 )
 

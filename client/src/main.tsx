@@ -10,9 +10,9 @@ function render() {
   if (env.environment === 'development') {
     return (
       < StrictMode > 
-      <QueryClientProvider client={queryClient}>
-        <App />
-      </QueryClientProvider>
+        <QueryClientProvider client={queryClient}>
+          <App />
+        </QueryClientProvider>
       </ StrictMode>
     )
   }

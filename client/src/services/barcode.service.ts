@@ -10,7 +10,7 @@ export default async function getProductDataByBarcode(barcode: string): Promise<
     const info: ProductByBarcode = {
       name: product?.product_name ?? '',
       category: product?.categories ? product.categories.split(",")[0].trim() : '',
-      barcode: data?.code ?? barcode,
+      barcode: data?.code || barcode,
     };
 
     return productByBarcodeSchema.parse(info);
