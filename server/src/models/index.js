@@ -5,6 +5,7 @@ import Product from "./product.model.js";
 import Employee from "./employee.model.js";
 import Plan from "./plan.model.js";
 import Subscription from "./subscription.model.js";
+import Settings from "./settings.model.js";
 
 // --------------------
 // Company ↔ Category
@@ -23,6 +24,10 @@ Employee.belongsTo(Company, { foreignKey: 'companyId', as: 'company' });
 // --------------------
 Company.hasMany(Product, { foreignKey: 'companyId', as: 'products' });
 Product.belongsTo(Company, { foreignKey: 'companyId', as: 'company' });
+
+//Company-> Settings
+Company.hasOne(Settings, { foreignKey: 'companyId', as: 'settings' });
+Settings.belongsTo(Company, { foreignKey: 'companyId', as: 'company' });
 
 // --------------------
 // User ↔ Company (propietario)

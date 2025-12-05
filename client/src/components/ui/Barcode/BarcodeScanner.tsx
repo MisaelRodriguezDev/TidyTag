@@ -1,12 +1,32 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Html5Qrcode, type Html5QrcodeCameraScanConfig } from "html5-qrcode";
 
+/**
+ * Props del componente BarcodeScanner.
+ * @typedef {Object} BarcodeScannerProps
+ * @property {(code: string) => void} onScan - Callback ejecutado cuando se detecta un código correctamente.
+ * @property {(error: string) => void} [onError] - Callback ejecutado cuando ocurre un error durante el escaneo.
+ * @property {() => void} [onClose] - Callback ejecutado cuando el escáner se desmonta o se detiene.
+ */
 interface BarcodeScannerProps {
   onScan: (code: string) => void;
   onError?: (error: string) => void;
   onClose?: () => void;
 }
 
+/**
+ * Componente para escanear códigos QR o de barras usando la cámara del dispositivo.
+ *
+ * Incluye:
+ * - Detección automática de cámaras disponibles.
+ * - Selección manual de cámara.
+ * - Inicio y detención del escaneo.
+ * - Entrada manual de código.
+ *
+ * @component
+ * @param {BarcodeScannerProps} props - Propiedades del componente.
+ * @returns {JSX.Element}
+ */
 const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
   onScan,
   onError,
@@ -16,7 +36,11 @@ const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
   const [manualCode, setManualCode] = useState("");
   const [cameras, setCameras] = useState<{ id: string; label: string }[]>([]);
   const [selectedCamera, setSelectedCamera] = useState<string>("");
+
+  /** @type {React.MutableRefObject<Html5Qrcode | null>} Referencia al escáner */
   const scannerRef = useRef<Html5Qrcode | null>(null);
+
+  /** ID del contenedor donde se monta el escáner */
   const containerId = "barcode-scanner-container";
 
   useEffect(() => {
@@ -36,7 +60,7 @@ const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
       })
       .catch((err) => onError?.(err.message));
 
-    // ✅ Limpieza segura al desmontar (evita pantalla en blanco)
+    // Limpieza segura al desmontar
     return () => {
       const stopAndClear = async () => {
         try {
@@ -49,22 +73,29 @@ const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
         } finally {
           scannerRef.current = null;
           setScanning(false);
-          onClose?.(); // Notificar cierre
+          onClose?.();
         }
       };
       stopAndClear();
     };
   }, []);
 
+  /**
+   * Inicia el proceso de escaneo usando la cámara seleccionada.
+   * @async
+   * @returns {Promise<void>}
+   */
   const startScanning = async () => {
     if (!selectedCamera) {
       onError?.("No se ha seleccionado cámara");
       return;
     }
+
     try {
       scannerRef.current = new Html5Qrcode(containerId);
       setScanning(true);
 
+      /** @type {Html5QrcodeCameraScanConfig} */
       const config: Html5QrcodeCameraScanConfig = {
         fps: 5,
         qrbox: 250,
@@ -88,6 +119,10 @@ const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
     }
   };
 
+  /**
+   * Detiene el escaneo y limpia el contenedor.
+   * @returns {void}
+   */
   const stopScanning = () => {
     if (scannerRef.current) {
       scannerRef.current
@@ -100,6 +135,11 @@ const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
     }
   };
 
+  /**
+   * Maneja el envío del código ingresado manualmente.
+   * @param {React.FormEvent} e - Evento del formulario.
+   * @returns {void}
+   */
   const handleManualSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (manualCode.trim() === "") return;
@@ -129,7 +169,7 @@ const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
         </div>
       )}
 
-      {/* Botones escaneo */}
+      {/* Botones */}
       <div className="flex justify-center gap-2 flex-wrap">
         {!scanning ? (
           <button
@@ -148,13 +188,13 @@ const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
         )}
       </div>
 
-      {/* Contenedor del scanner */}
+      {/* Contenedor del escáner */}
       <div
         id={containerId}
         className="w-full h-50 sm:h-80 md:h-96 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center"
       />
 
-      {/* Entrada manual */}
+      {/* Ingreso manual */}
       <form onSubmit={handleManualSubmit} className="flex flex-col sm:flex-row gap-2">
         <input
           type="text"

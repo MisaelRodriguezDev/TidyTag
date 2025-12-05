@@ -5,7 +5,7 @@ export const createCompanySchema = z.object({
     name: z.string(),
     email: z.email(),
     phone: z.string(),
-    location: z.string()
+    ownerId: z.uuid()
 })
 
 export const updateCompanySchema = createCompanySchema.partial()

@@ -7,8 +7,12 @@ const Employee = sequelize.define("Employee", {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true
     },
-    username: {
-        type: DataTypes.STRING(50),
+    firstName: {
+        type: DataTypes.STRING(100),
+        allowNull: false
+    },
+    lastName: {
+        type: DataTypes.STRING(100),
         allowNull: false
     },
     email: {

@@ -2,11 +2,11 @@ import {z} from 'zod'
 import commonSchema from './common'
 
 export const createEmployeeSchema = z.object({
-    name: z.string(),
+    firstName: z.string(),
     lastName: z.string(),
     email: z.email(),
-    phone: z.string(),
-    password: z.string()
+    password: z.string(),
+    companyId: z.uuid(),
 })
 
 export const updateEmployeeSchema = createEmployeeSchema.partial()
