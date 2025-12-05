@@ -261,11 +261,6 @@ const Profile: React.FC = () => {
               onChange={(checked) => updateField('notifications', 'lowStockAlerts', checked)}
             />
             <ToggleField 
-              label="Resumen Semanal por Correo" 
-              checked={config.notifications.weeklySummary}
-              onChange={(checked) => updateField('notifications', 'weeklySummary', checked)}
-            />
-            <ToggleField 
               label="Alertas de Ventas" 
               checked={config.notifications.salesAlerts}
               onChange={(checked) => updateField('notifications', 'salesAlerts', checked)}
@@ -304,30 +299,6 @@ const Profile: React.FC = () => {
           <button className="mt-4 w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700">
             Invitar Usuario
           </button>
-        </ConfigCard>
-
-        <ConfigCard title="Datos y Exportación">
-          <form className="space-y-4">
-            <InputField 
-              label="Formato de Exportación" 
-              placeholder="CSV / XLSX" 
-              value={config.export.exportFormat}
-              onChange={(value) => updateField('export', 'exportFormat', value)}
-            />
-            <ToggleField 
-              label="Incluir Archivados" 
-              checked={config.export.includeArchived}
-              onChange={(checked) => updateField('export', 'includeArchived', checked)}
-            />
-            <div className="flex gap-4">
-              <button type="button" className="flex-1 bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300">
-                Exportar
-              </button>
-              <button type="button" className="flex-1 bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300">
-                Importar
-              </button>
-            </div>
-          </form>
         </ConfigCard>
 
         <ConfigCard title="Zona Peligrosa">
