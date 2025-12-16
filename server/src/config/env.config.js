@@ -14,7 +14,9 @@ const envSchema = z.object({
     DB_DIALECT: z.string().nonempty("DB_DIALECT es obligatorio"),
     DB_NAME: z.string().nonempty("DB_NAME es obligatorio"),
     SECRET_KEY: z.string().nonempty("SECRET_KEY es obligatorio"),
-    PORT: z.coerce.number().default(3000)
+    PORT: z.coerce.number().default(3000),
+    ALLOWED_ORIGINS: z.string().nonempty("ALLOWED_ORIGINS es obligatorio"),
+    NODE_ENV: z.string().default("production")
 });
 
 // Validar y extraer las variables

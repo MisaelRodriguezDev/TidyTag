@@ -46,7 +46,8 @@ const onSubmit = (data: CreateProductInput) => {
 
       <label className="flex flex-col">
         <span>Categoría:</span>
-        <input {...register("category")} className="border p-2 rounded w-full" />
+        <input {...register("categoryId")} className="border p-2 rounded w-full" />
+        {errors.categoryId && <span className="text-red-500">{errors.categoryId.message}</span>}
       </label>
 
       <label className="flex flex-col">
@@ -64,10 +65,10 @@ const onSubmit = (data: CreateProductInput) => {
         <span>Cantidad:</span>
         <input
           type="number"
-          {...register("quantity", { valueAsNumber: true })}
+          {...register("stock", { valueAsNumber: true })}
           className="border p-2 rounded w-full"
         />
-        {errors.quantity && <span className="text-red-500">{errors.quantity.message}</span>}
+        {errors.stock && <span className="text-red-500">{errors.stock.message}</span>}
       </label>
 
       <label className="flex flex-col">

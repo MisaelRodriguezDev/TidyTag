@@ -22,10 +22,15 @@ app.use(express.json()); // Analiza cuerpos JSON de las solicitudes entrantes
 app.use(express.urlencoded({ extended: false })); // Analiza cuerpos codificados en URL
 app.use(cookieParser()); // Habilita el análisis de cookies
 
+app.use("/api/v1/health", (_, res) => {
+    res.status(200).json({status: "healthy"})
+})
+
 // Registro de rutas en el prefijo "/api/v1"
 for (const route of routes) {
     app.use("/api/v1", route);
 }
+
 
 // Registro del middleware de manejo de errores
 // @ts-ignore Se ignoran temporalmente los errores de tipado en TypeScript relacionados con el middleware

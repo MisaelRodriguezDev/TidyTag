@@ -6,6 +6,7 @@ import Employee from "./employee.model.js";
 import Plan from "./plan.model.js";
 import Subscription from "./subscription.model.js";
 import Settings from "./settings.model.js";
+import Transaction from "./transaction.model.js";
 
 // --------------------
 // Company ↔ Category
@@ -29,11 +30,19 @@ Product.belongsTo(Company, { foreignKey: 'companyId', as: 'company' });
 Company.hasOne(Settings, { foreignKey: 'companyId', as: 'settings' });
 Settings.belongsTo(Company, { foreignKey: 'companyId', as: 'company' });
 
+// Company -> Transaction
+Company.hasMany(Transaction, { foreignKey: 'companyId', as: 'transactions' });
+Transaction.belongsTo(Company, { foreignKey: 'companyId', as: 'company' });
+
 // --------------------
 // User ↔ Company (propietario)
 // --------------------
 User.hasMany(Company, { foreignKey: 'ownerId', as: 'ownedCompanies' });
 Company.belongsTo(User, { foreignKey: 'ownerId', as: 'owner' });
+
+// User -> transaction
+User.hasMany(Transaction, { foreignKey: 'userId', as: 'transactions' });
+Transaction.belongsTo(User, { foreignKey: 'userId', as: 'user' })
 
 // --------------------
 // Category ↔ Product
@@ -60,3 +69,7 @@ Subscription.belongsTo(Company, { foreignKey: 'companyId', as: 'company' });
 // --------------------
 User.hasOne(Subscription, { foreignKey: 'userId', as: 'subscription' });
 Subscription.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+
+// Product -> Tranansaction
+Product.hasMany(Transaction, {  foreignKey: 'productId', as: 'transactions'});
+Transaction.belongsTo(Product, { foreignKey: 'productId', as: 'product' })

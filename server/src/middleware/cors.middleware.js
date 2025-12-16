@@ -1,8 +1,7 @@
 //@ts-nocheck
 import cors from "cors"; // Middleware para habilitar CORS (Cross-Origin Resource Sharing)
-import { configDotenv } from "dotenv";
+import env from "../config/env.config.js"
 
-configDotenv();
 
 /**
  * @module Middleware/Cors
@@ -12,7 +11,7 @@ configDotenv();
  * Constante que contendrá los sitios que pueden interactuar con el backend.
  */
 //@ts-ignore
-const ALLOWED_ORIGINS =  process.env.ALLOWED_ORIGINS.split(",");
+const ALLOWED_ORIGINS =  env.ALLOWED_ORIGINS.split(","); // "*," -- desarrollo 
 
 /**
  * Configuración de CORS (Intercambio de Recursos de Origen Cruzado).
@@ -33,7 +32,7 @@ const ALLOWED_ORIGINS =  process.env.ALLOWED_ORIGINS.split(",");
  */
 export const corsOptions = {
     origin: (origin, callback) => {
-        if (!origin && process.env.NODE_ENV === "development") return callback(null, true); // Permitir solicitudes sin origen
+        if (!origin && env.NODE_ENV === "development" || ALLOWED_ORIGINS.includes("*")) return callback(null, true); // Permitir solicitudes sin origen
         if (!ALLOWED_ORIGINS.includes(origin)) {
             return callback(new Error("Origen no permitido por CORS")); // Origen denegado
         }
